@@ -40,7 +40,7 @@ describe('backend-express-yawp-routes', () => {
     const res = await request(app)
       .post('/api/v1/users/sessions')
       .send({ email: 'test@user.com', password: 'testtest' });
-    console.log(res.body);
+    console.log(res.status);
     expect(res.status).toEqual(200);
   });
 });
