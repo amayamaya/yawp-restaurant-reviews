@@ -34,4 +34,13 @@ describe('backend-express-yawp-routes', () => {
       },
     });
   });
+
+  it('#POST signs in an existing user', async () => {
+    await request(app).post('/api/v1/users').send(testUser);
+    const res = await request(app)
+      .post('/api/v1/users/sessions')
+      .send({ email: 'test@user.com', password: 'testtest' });
+    console.log(res.body);
+    expect(res.status).toEqual(200);
+  });
 });
