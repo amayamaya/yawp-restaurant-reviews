@@ -15,7 +15,7 @@ const registerAndLogin = async (userProps = {}) => {
   const agent = request.agent(app);
   const user = { ...testUser, ...userProps };
   const { email } = user;
-  await agent.post('/api/v1/users/sessions').send({ email, password }); 
+  await agent.post('/api/v1/users/sessions').send({ email, password });
   return [agent, user];
 };
 
@@ -58,3 +58,4 @@ describe('backend-express-yawp-routes', () => {
     const res = await agent.get('/api/v1/users');
     expect(res.status).toEqual(200);
   });
+});
