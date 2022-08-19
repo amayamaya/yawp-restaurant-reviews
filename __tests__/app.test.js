@@ -4,10 +4,10 @@ const request = require('supertest');
 const app = require('../lib/app');
 
 const testUser = {
-  firstName: 'Test',
-  lastName: 'User',
+  id: '1',
+  username: 'tester123',
   email: 'test@user.com',
-  password: 'testtest',
+  password: '123456',
 };
 
 const registerAndLogin = async (userProps = {}) => {
@@ -48,7 +48,7 @@ describe('backend-express-yawp-routes', () => {
     await request(app).post('/api/v1/users').send(testUser);
     const res = await request(app)
       .post('/api/v1/users/sessions')
-      .send({ email: 'test@user.com', password: 'testtest' });
+      .send({ username: 'testuser123', password: '123456' });
     console.log(res.status);
     expect(res.status).toEqual(200);
   });
