@@ -10,14 +10,14 @@ const testUser = {
   password: '123456',
 };
 
-const registerAndLogin = async (userProps = {}) => {
-  const password = userProps.password ?? testUser.password;
-  const agent = request.agent(app);
-  const user = { ...testUser, ...userProps };
-  const { email } = user;
-  await agent.post('/api/v1/users/sessions').send({ email, password });
-  return [agent, user];
-};
+// const registerAndLogin = async (userProps = {}) => {
+//   const password = userProps.password ?? testUser.password;
+//   const agent = request.agent(app);
+//   const user = { ...testUser, ...userProps };
+//   const { email } = user;
+//   await agent.post('/api/v1/users/sessions').send({ email, password });
+//   return [agent, user];
+// };
 
 describe('backend-express-yawp-routes', () => {
   beforeEach(() => {
@@ -28,18 +28,17 @@ describe('backend-express-yawp-routes', () => {
     pool.end();
   });
 
-  it('#POST creates user and user-cookie', async () => {
+  it.only('#POST creates user and user-cookie', async () => {
     const resp = await request(app).post('/api/v1/users').send(testUser);
-    const { firstName, lastName, email } = testUser;
+    const { email, username } = testUser;
     expect(resp.status).toEqual(200);
     //body referring to the json
     expect(resp.body).toEqual({
       message: 'Sign in successful',
       user: {
         id: expect.any(String),
-        firstName,
-        lastName,
         email,
+        username,
       },
     });
   });
@@ -54,8 +53,19 @@ describe('backend-express-yawp-routes', () => {
   });
 
   it('#GET shows a list of users, only for authenticated members', async () => {
-    const [agent] = await registerAndLogin();
+    const [agent] = request.agent(app);
+    await agent
+      .post('/api/v1/users')
+      .send({ ...testUser, email: '123@admin.com' });
+    await agent
+      .post('/api/v1/users/sessions')
+      .send({ ...testUser, email: '123@admin.com' });
+
     const res = await agent.get('/api/v1/users');
-    expect(res.status).toEqual(200);
+    expect(res.status).toEqual([
+      { email: '321@user.com', id: '1', username: 'tester321' },
+      { email: '547@user.com', id: '2', username: 'tester547' },
+      { email: '123@admin.com', id: '3', username: 'tester123' },
+    ]);
   });
 });

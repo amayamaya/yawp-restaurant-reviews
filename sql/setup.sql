@@ -4,14 +4,14 @@ DROP TABLE IF EXISTS yawp_users;
 
 CREATE TABLE yawp_users (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    first_name TEXT NOT NULL,
-    last_name TEXT NOT NULL,
+    username TEXT NOT NULL,
     email TEXT NOT NULL,
     password_hash TEXT NOT NULL
 );
 
-INSERT INTO yawp_users (first_name, last_name, email, password_hash)VALUES 
-('test1', 'test1', 'test1@test.com', 'nottest1passwordhash'),
-('test2', 'test2', 'test2@test.com', 'nottest2passwordhash'),
-('test3', 'test3', 'test3@test.com', 'nottest3passwordhash');
+INSERT INTO yawp_users (username, email, password_hash) 
+VALUES 
+('test123', 'test123@test.com', 'nottest123passwordhash'),
+('test234', 'test234@test.com', 'nottest234passwordhash'),
+('test345', 'test345@test.com', 'nottest345passwordhash')
 
