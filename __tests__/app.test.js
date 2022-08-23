@@ -28,26 +28,26 @@ describe('backend-express-yawp-routes', () => {
     pool.end();
   });
 
-  it.skip('#POST creates user and user-cookie', async () => {
+  it('#POST creates user and user-cookie', async () => {
     const resp = await request(app).post('/api/v1/users').send(testUser);
     const { email, username } = testUser;
     expect(resp.status).toEqual(200);
+
     //body referring to the json
     expect(resp.body).toEqual({
       message: 'Sign in successful',
       user: {
         id: expect.any(String),
         email,
-        username,
       },
     });
   });
 
-  it.skip('#POST signs in an existing user', async () => {
+  it('#POST signs in an existing user', async () => {
     await request(app).post('/api/v1/users').send(testUser);
     const res = await request(app)
       .post('/api/v1/users/sessions')
-      .send({ username: 'testuser123', password: '123456' });
+      .send({ email: 'test@user.com', password: '123456' });
     // console.log(res.status);
     expect(res.status).toEqual(200);
   });

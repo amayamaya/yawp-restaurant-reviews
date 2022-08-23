@@ -20,10 +20,10 @@ If you work on more than one feature at a time, you are guaranteed to multiply y
 
 **ToDoList**
 
-- npm i
-- remove .example form env file
-- Setup SQL file - what tables an columns are req
-  user table - reference
+X npm i
+X remove .example form env file
+X Setup SQL file - what tables an columns are req
+X user table - reference
   github_users;
   id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   username TEXT NOT NULL,
@@ -57,7 +57,7 @@ Start at the Root App.js gets hit first
 
   0.  authenticate lets you in the club
 
-- POST /api/v1/users/sessions Logs in an existing user
+X - POST /api/v1/users/sessions Logs in an existing user
   Should error if email / password don’t match
 - GET /api/v1/users Shows list of users Protected
   must be admin 2
