@@ -28,7 +28,7 @@ describe('backend-express-yawp-routes', () => {
     pool.end();
   });
 
-  it('#POST creates user and user-cookie', async () => {
+  it.skip('#POST creates user and user-cookie', async () => {
     const resp = await request(app).post('/api/v1/users').send(testUser);
     const { email, username } = testUser;
     expect(resp.status).toEqual(200);
@@ -43,7 +43,7 @@ describe('backend-express-yawp-routes', () => {
     });
   });
 
-  it('#POST signs in an existing user', async () => {
+  it.skip('#POST signs in an existing user', async () => {
     await request(app).post('/api/v1/users').send(testUser);
     const res = await request(app)
       .post('/api/v1/users/sessions')
@@ -52,8 +52,8 @@ describe('backend-express-yawp-routes', () => {
     expect(res.status).toEqual(200);
   });
 
-  it('#GET shows a list of users, only for authenticated members', async () => {
-    const [agent] = request.agent(app);
+  it('#GET shows a list of users, only for authorized members', async () => {
+    const agent = request.agent(app);
     await agent
       .post('/api/v1/users')
       .send({ ...testUser, email: '123@admin.com' });
@@ -62,5 +62,14 @@ describe('backend-express-yawp-routes', () => {
       .send({ ...testUser, email: '123@admin.com' });
     const res = await agent.get('/api/v1/users');
     expect(res.status).toEqual(200);
+  });
+
+  //want to see a 403 when seeing users and not authorized
+  it('#GET shows a list of users, only for un-authorized members', async () => {
+    const agent = request.agent(app);
+    await agent.post('/api/v1/users').send(testUser);
+    await agent.post('/api/v1/users/sessions').send(testUser);
+    const res = await agent.get('/api/v1/users');
+    expect(res.status).toEqual(403);
   });
 });
