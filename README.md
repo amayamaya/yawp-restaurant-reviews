@@ -58,9 +58,9 @@ Start at the Root App.js gets hit first
   0.  authenticate lets you in the club
 
 X - POST /api/v1/users/sessions Logs in an existing user
-  Should error if email / password don’t match
-- GET /api/v1/users Shows list of users Protected
-  must be admin 2
+X - Should error if email / password don’t match
+X - GET /api/v1/users Shows list of users Protected
+X - must be admin 2
   authorized middleware here - for VIP
 
 **Restaurant Routes**

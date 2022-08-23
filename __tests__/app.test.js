@@ -30,7 +30,7 @@ describe('backend-express-yawp-routes', () => {
 
   it('#POST creates user and user-cookie', async () => {
     const resp = await request(app).post('/api/v1/users').send(testUser);
-    const { email, username } = testUser;
+    const { email } = testUser;
     expect(resp.status).toEqual(200);
 
     //body referring to the json
@@ -72,4 +72,8 @@ describe('backend-express-yawp-routes', () => {
     const res = await agent.get('/api/v1/users');
     expect(res.status).toEqual(403);
   });
+});
+it('shows lists of restaurants', async () => {
+  const res = await request(app).get('/api/v1/restaurants');
+  expect(res.status).toEqual(200);
 });
