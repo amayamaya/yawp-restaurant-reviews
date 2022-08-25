@@ -18,12 +18,10 @@ const testUser = {
 //   await agent.post('/api/v1/users/sessions').send({ email, password });
 //   return [agent, user];
 // };
-
 describe('backend-express-yawp-routes', () => {
   beforeEach(() => {
     return setup(pool);
   });
-
   afterAll(() => {
     pool.end();
   });
@@ -72,8 +70,12 @@ describe('backend-express-yawp-routes', () => {
     const res = await agent.get('/api/v1/users');
     expect(res.status).toEqual(403);
   });
-});
-it('shows lists of restaurants', async () => {
-  const res = await request(app).get('/api/v1/restaurants');
-  expect(res.status).toEqual(200);
+
+  it('shows lists of restaurants', async () => {
+    const res = await request(app).get('/api/v1/restaurants');
+    expect(res.status).toEqual(200);
+    // expect(res.body[0]).toEqual({
+    //   id: expect.any(String),
+    //   name: expect.any(String),
+  });
 });
