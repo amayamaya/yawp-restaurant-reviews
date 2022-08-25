@@ -74,8 +74,17 @@ describe('backend-express-yawp-routes', () => {
   it('shows lists of restaurants', async () => {
     const res = await request(app).get('/api/v1/restaurants');
     expect(res.status).toEqual(200);
-    // expect(res.body[0]).toEqual({
-    //   id: expect.any(String),
-    //   name: expect.any(String),
+    expect(res.body[0]).toEqual({
+      id: expect.any(String),
+      name: expect.any(String),
+    });
+  });
+  it('shows a review from a single restaurant', async () => {
+    const res = await request(app).get('/api/v1/restaurants/1/reviews');
+    expect(res.body).toHaveProperty('id', '1');
+    expect(res.body).toHaveProperty('name', 'McDonalds');
+    expect(res.body).toHaveProperty('style', 'Fast Burger');
+    expect(res.body).toHaveProperty('stars', '4');
+    expect(res.body.reviews[0]).toHaveProperty('id', '3');
   });
 });

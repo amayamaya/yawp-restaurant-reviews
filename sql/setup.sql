@@ -30,4 +30,20 @@ VALUES
 ('Wendys', 'Fast Everything', 3),
 ('Taco Bell', 'Fast Tacos', 2),
 ('Chipotle', 'Fast Burritos', 1),
-('Poke Bowl', 'Fast Fish', 5)
+('Poke Bowl', 'Fast Fish', 5);
+
+DROP TABLE IF EXISTS reviews cascade;
+CREATE TABLE reviews (
+  id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  restaurant_id BIGINT,
+  user_id BIGINT,
+  stars BIGINT,
+  details TEXT,
+  FOREIGN KEY (restaurant_id) REFERENCES restaurants(id),
+  FOREIGN KEY (user_id) REFERENCES yawp_users(id)
+);  
+INSERT INTO reviews (restaurant_id, user_id, stars, details)
+VALUES
+('1', '2', '5', 'it was McFast'),
+('2', '3', '5', 'I had it my way'),
+('3', '1', '5', 'Happy with the Hut')
