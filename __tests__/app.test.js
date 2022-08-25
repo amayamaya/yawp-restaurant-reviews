@@ -4,7 +4,6 @@ const request = require('supertest');
 const app = require('../lib/app');
 
 const testUser = {
-  id: '1',
   username: 'tester123',
   email: 'test@user.com',
   password: '123456',
@@ -28,6 +27,7 @@ describe('backend-express-yawp-routes', () => {
 
   it('#POST creates user and user-cookie', async () => {
     const resp = await request(app).post('/api/v1/users').send(testUser);
+    console.log(resp.body);
     const { email } = testUser;
     expect(resp.status).toEqual(200);
 
