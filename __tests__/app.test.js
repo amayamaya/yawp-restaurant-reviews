@@ -107,4 +107,12 @@ describe('backend-express-yawp-routes', () => {
       ...newReview,
     });
   });
+
+  it('should delete a review for authorized users', async () => {
+    const [agent] = await registerAndLogin();
+    const res = await agent.delete('/api/v1/reviews/2');
+    expect(res.status).toEqual(200);
+    const reviewResponse = await request(app).get('/api/v1/reviews/2');
+    expect(reviewResponse.status).toEqual(404);
+  });
 });
