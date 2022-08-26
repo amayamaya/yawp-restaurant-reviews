@@ -2,6 +2,7 @@ const pool = require('../lib/utils/pool');
 const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
+const UserService = require('../lib/services/UserService');
 
 const testUser = {
   username: 'tester123',
@@ -9,14 +10,15 @@ const testUser = {
   password: '123456',
 };
 
-// const registerAndLogin = async (userProps = {}) => {
-//   const password = userProps.password ?? testUser.password;
-//   const agent = request.agent(app);
-//   const user = { ...testUser, ...userProps };
-//   const { email } = user;
-//   await agent.post('/api/v1/users/sessions').send({ email, password });
-//   return [agent, user];
-// };
+const registerAndLogin = async (userProps = {}) => {
+  const password = userProps.password ?? testUser.password;
+  const agent = request.agent(app);
+  const user = { ...testUser, ...userProps };
+  const { email } = user;
+  await agent.post('/api/v1/users/sessions').send({ email, password });
+  return [agent, user];
+};
+
 describe('backend-express-yawp-routes', () => {
   beforeEach(() => {
     return setup(pool);
@@ -85,5 +87,21 @@ describe('backend-express-yawp-routes', () => {
     expect(res.body).toHaveProperty('name', 'McDonalds');
     expect(res.body).toHaveProperty('style', 'Fast Burger');
     expect(res.body.reviews[0]).toHaveProperty('id', 1);
+  });
+
+  it('#POST creates a review for authorized users', async () => {
+    const newReview = {
+      stars: '5',
+      details: 'Happy with the Hut',
+      restaurant_id: '3',
+    };
+    const [agent] = await registerAndLogin();
+    const res = await agent
+      .post('/api/v1/restaurants/3/reviews')
+      .send(newReview);
+    expect(res.body).toEqual({
+      id: expect.any(String),
+      ...newReview,
+    });
   });
 });
