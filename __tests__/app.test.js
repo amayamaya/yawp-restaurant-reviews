@@ -13,7 +13,7 @@ const testUser = {
 const registerAndLogin = async (userProps = {}) => {
   const password = userProps.password ?? testUser.password;
   const agent = request.agent(app);
-  const user = { ...testUser, ...userProps };
+  const user = await UserService.create({ ...testUser, ...userProps });
   const { email } = user;
   await agent.post('/api/v1/users/sessions').send({ email, password });
   return [agent, user];
@@ -52,8 +52,8 @@ describe('backend-express-yawp-routes', () => {
     expect(res.status).toEqual(200);
   });
 
-  it('#GET shows a list of users, only for authorized members', async () => {
-    const agent = request.agent(app);
+  it('#GET shows a list of users, only for authenticated members', async () => {
+    const [agent] = await registerAndLogin();
     await agent
       .post('/api/v1/users')
       .send({ ...testUser, email: '123@admin.com' });
@@ -96,6 +96,9 @@ describe('backend-express-yawp-routes', () => {
       restaurant_id: '3',
     };
     const [agent] = await registerAndLogin();
+    await agent
+      .post('/api/v1/users')
+      .send({ ...testUser, email: '123@admin.com' });
     const res = await agent
       .post('/api/v1/restaurants/3/reviews')
       .send(newReview);
