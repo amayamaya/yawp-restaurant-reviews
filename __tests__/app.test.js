@@ -29,7 +29,7 @@ describe('backend-express-yawp-routes', () => {
 
   it('#POST creates user and user-cookie', async () => {
     const resp = await request(app).post('/api/v1/users').send(testUser);
-    console.log(resp.body);
+    // console.log(resp.body);
     const { email } = testUser;
     expect(resp.status).toEqual(200);
 
@@ -73,7 +73,7 @@ describe('backend-express-yawp-routes', () => {
     expect(res.status).toEqual(403);
   });
 
-  it('shows lists of restaurants', async () => {
+  it('#GET shows lists of restaurants', async () => {
     const res = await request(app).get('/api/v1/restaurants');
     expect(res.status).toEqual(200);
     expect(res.body[0]).toEqual({
@@ -81,7 +81,7 @@ describe('backend-express-yawp-routes', () => {
       name: expect.any(String),
     });
   });
-  it('shows a review from a single restaurant', async () => {
+  it('#GET shows a review from a single restaurant', async () => {
     const res = await request(app).get('/api/v1/restaurants/1');
     expect(res.body).toHaveProperty('id', '1');
     expect(res.body).toHaveProperty('name', 'McDonalds');
@@ -89,7 +89,7 @@ describe('backend-express-yawp-routes', () => {
     expect(res.body.reviews[0]).toHaveProperty('id', 1);
   });
 
-  it('#POST creates a review for authorized users', async () => {
+  it('#POST creates a review user if signed in', async () => {
     const newReview = {
       stars: '5',
       details: 'Happy with the Hut',
@@ -100,7 +100,7 @@ describe('backend-express-yawp-routes', () => {
       .post('/api/v1/users')
       .send({ ...testUser, email: '123@admin.com' });
     const res = await agent
-      .post('/api/v1/restaurants/3/reviews')
+      .post('/api/v1/restaurants/2/reviews')
       .send(newReview);
     expect(res.body).toEqual({
       id: expect.any(String),
@@ -108,11 +108,15 @@ describe('backend-express-yawp-routes', () => {
     });
   });
 
-  it('should delete a review for authorized users', async () => {
+  it('#DELETE should delete a review for admin', async () => {
     const [agent] = await registerAndLogin();
+    await agent
+      .post('/api/v1/users')
+      .send({ ...testUser, email: '123@admin.com' });
     const res = await agent.delete('/api/v1/reviews/2');
+    // console.log('heyres', res);
     expect(res.status).toEqual(200);
-    const reviewResponse = await request(app).get('/api/v1/reviews/2');
-    expect(reviewResponse.status).toEqual(404);
+    const resp = await agent.get('/api/v1/reviews/2');
+    expect(resp.status).toEqual(404);
   });
 });
