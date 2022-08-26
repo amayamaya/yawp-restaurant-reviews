@@ -80,11 +80,10 @@ describe('backend-express-yawp-routes', () => {
     });
   });
   it('shows a review from a single restaurant', async () => {
-    const res = await request(app).get('/api/v1/restaurants/1/reviews');
+    const res = await request(app).get('/api/v1/restaurants/1');
     expect(res.body).toHaveProperty('id', '1');
     expect(res.body).toHaveProperty('name', 'McDonalds');
     expect(res.body).toHaveProperty('style', 'Fast Burger');
-    expect(res.body).toHaveProperty('stars', '4');
-    expect(res.body.reviews[0]).toHaveProperty('id', '3');
+    expect(res.body.reviews[0]).toHaveProperty('id', 1);
   });
 });

@@ -15,22 +15,21 @@ DROP TABLE IF EXISTS restaurants cascade;
 CREATE TABLE restaurants (
   id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   name TEXT,
-  style TEXT,
-  stars BIGINT
+  style TEXT
   );
 
-INSERT into restaurants (name, style, stars)
+INSERT into restaurants (name, style)
 VALUES
-('McDonalds', 'Fast Burger', 4),
-('Burger King', 'Fast Burger', 3),
-('Pizza Hut', 'Fast Pizza', 2),
-('KFC', 'Fast Chicken', 1),
-('Papa Johns', 'Slow Pizza', 5),
-('Subway', 'Fast Sandwich', 4),
-('Wendys', 'Fast Everything', 3),
-('Taco Bell', 'Fast Tacos', 2),
-('Chipotle', 'Fast Burritos', 1),
-('Poke Bowl', 'Fast Fish', 5);
+('McDonalds', 'Fast Burger'),
+('Burger King', 'Fast Burger'),
+('Pizza Hut', 'Fast Pizza'),
+('KFC', 'Fast Chicken'),
+('Papa Johns', 'Slow Pizza'),
+('Subway', 'Fast Sandwich'),
+('Wendys', 'Fast Everything'),
+('Taco Bell', 'Fast Tacos'),
+('Chipotle', 'Fast Burritos'),
+('Poke Bowl', 'Fast Fish');
 
 DROP TABLE IF EXISTS reviews cascade;
 CREATE TABLE reviews (
@@ -45,5 +44,5 @@ CREATE TABLE reviews (
 INSERT INTO reviews (restaurant_id, user_id, stars, details)
 VALUES
 ('1', '2', '5', 'it was McFast'),
-('2', '3', '5', 'I had it my way'),
+('1', '3', '5', 'I had it my way'),
 ('3', '1', '5', 'Happy with the Hut')
